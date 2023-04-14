@@ -41,7 +41,8 @@ class UserController extends Controller
             'verification_token' => User::generateVerificationCode(),
             'admin' => User::REGULAR_USER,
         ]);
-        return response()->json(['data' => $user], 201);
+        return $this->successResponse('user saved successfully', $user, 201);
+     
     }
 
     /**
@@ -88,18 +89,20 @@ class UserController extends Controller
         if($request->has('admin')){
             if(!$user->isVerified())
             {
-                return response()->json(['error' => 'Only verified user can modify this field', 'code' => 409], 409);
+                return $this->errorResponse('Only verified user can modify this field');
+                
             }
             $user->admin = $validated['admin'];
         }
         if($user->isDirty())
         {
-            return response()->json(['error' => 'You need to specify a different value to update', 'code' => 422], 422);
+            return $this->errorResponse('You need to specify a different value to update', 422);
         }
 
         $user->save();
 
-        return response()->json(['data' => $user], 200);
+        return $this->successResponse('user saved successfully', $user);
+    
 
     }
 
@@ -112,7 +115,9 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
+
         $user->delete();
-        return response()->json(['data' => $user], 200);
+        
+        return $this->successResponse('user deleted successfully', $user);
     }
 }
