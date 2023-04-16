@@ -19,6 +19,7 @@ class CreateTransactionsTable extends Migration
             $table->foreignId('buyer_id')->constrained('users');
             $table->foreignId('product_id')->constrained();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

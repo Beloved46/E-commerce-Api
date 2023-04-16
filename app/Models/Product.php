@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     const AVAILABLE_PRODUCT = 'available';
     const UNAVAILABLE_PRODUCT =  'unavailble';
@@ -20,6 +21,8 @@ class Product extends Model
         'image',
         'seller_id'
     ];
+
+    protected $date = ['deleted_at'];
 
     public function isAvailable()
     {
